@@ -15,12 +15,20 @@ public class MenuBar extends JMenuBar {
 	JMenuItem plikZakoncz;
 
 	JMenuItem czcionkaKolor;
-	JMenuItem czcionkaRozmiar;
-	JMenuItem czcionkaRodzaj;
+	JMenu czcionkaRozmiar;
+	JMenu czcionkaRodzaj;
+
+	JMenuItem czcionkaRozmiarDuzy;
+	JMenuItem czcionkaRozmiarMaly;
+	JMenuItem czcionkaRozmiarNormalny;
+
+	JMenuItem czcionkaRodzajNormalna;
+	JMenuItem czcionkaRodzajItalic;
+	JMenuItem czcionkaRodzajBold;
 
 	public MenuBar() {
 		plik = new JMenu("Plik");
-		czcionka = new JMenu("Czcinka");
+		czcionka = new JMenu("Czcionka");
 
 		plikNowy = new JMenuItem("Nowy");
 		plikOtworz = new JMenuItem("Otwórz");
@@ -28,14 +36,30 @@ public class MenuBar extends JMenuBar {
 		plikZakoncz = new JMenuItem("Zakończ");
 
 		czcionkaKolor = new JMenuItem("Kolor");
-		czcionkaRodzaj = new JMenuItem("Rodzaj");
-		czcionkaRozmiar = new JMenuItem("Rozmiar");
+		czcionkaRodzaj = new JMenu("Rodzaj");
+		czcionkaRozmiar = new JMenu("Rozmiar");
+
+		czcionkaRozmiarDuzy = new JMenuItem("Duża");
+		czcionkaRozmiarMaly = new JMenuItem("Mała");
+		czcionkaRozmiarNormalny = new JMenuItem("Normalna");
+
+		czcionkaRodzajNormalna = new JMenuItem("Normalna");
+		czcionkaRodzajItalic = new JMenuItem("Kusywa");
+		czcionkaRodzajBold = new JMenuItem("Pogrubiona");
 
 		plik.add(plikNowy);
 		plik.add(plikOtworz);
 		plik.add(plikZapisz);
 		plik.addSeparator();
 		plik.add(plikZakoncz);
+
+		czcionkaRozmiar.add(czcionkaRozmiarDuzy);
+		czcionkaRozmiar.add(czcionkaRozmiarNormalny);
+		czcionkaRozmiar.add(czcionkaRozmiarMaly);
+
+		czcionkaRodzaj.add(czcionkaRodzajBold);
+		czcionkaRodzaj.add(czcionkaRodzajItalic);
+		czcionkaRodzaj.add(czcionkaRodzajNormalna);
 
 		czcionka.add(czcionkaKolor);
 		czcionka.add(czcionkaRozmiar);
