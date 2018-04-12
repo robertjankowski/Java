@@ -40,8 +40,8 @@ public class MainFrame extends JFrame {
 		this.setLocationRelativeTo(null);
 
 		menuBar = new MenuBar();
-		bottomPanel = new BottomPanel();
 		editorPanel = new EditorPanel();
+		bottomPanel = new BottomPanel(editorPanel);
 		menuListener = new MenuListener(menuBar, editorPanel);
 		this.setJMenuBar(menuBar);
 		this.add(bottomPanel, BorderLayout.PAGE_END);

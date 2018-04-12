@@ -4,9 +4,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MenuListener implements ActionListener {
 
@@ -43,24 +50,23 @@ public class MenuListener implements ActionListener {
 				editorPanel.textPane.setText("");
 			}
 			if (save == 0) {
-				// save
+				saveToFile(editorPanel.textPane);
 			}
 		}
 		if (o.equals(menuBar.plikOtworz)) {
-
+			openFile(editorPanel.textPane);
 		}
 		if (o.equals(menuBar.plikZapisz)) {
-
+			saveToFile(editorPanel.textPane);
 		}
 		if (o.equals(menuBar.plikZakoncz)) {
 			int exit = JOptionPane.showConfirmDialog(editorPanel, "Czy chcesz zapisać plik ?", "Zakończ",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			// yes - 0 no - 1 cancel - 2
 			if (exit == 1) {
 				System.exit(0);
 			}
 			if (exit == 0) {
-				// save !
+				saveToFile(editorPanel.textPane);
 			}
 		}
 		if (o.equals(menuBar.czcionkaKolor)) {
@@ -92,6 +98,36 @@ public class MenuListener implements ActionListener {
 			editorPanel.textPane.setFont(new Font("Serif", currentFontStyle, currentFontSize));
 		}
 
+	}
+
+	private void saveToFile(JTextPane textPane) {
+		final JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showDialog(null, "Save");
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			try (FileWriter fw = new FileWriter(fc.getSelectedFile() + ".txt")) {
+				fw.write(textPane.getText());
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void openFile(JTextPane textPane) {
+		final JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+		fc.setFileFilter(filter);
+		int returnVal = fc.showDialog(null, "Open");
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			try {
+				editorPanel.checkList = editorPanel.loadFile(fc.getSelectedFile().getAbsolutePath());
+				editorPanel.checkList.forEach(e -> System.out.println(e));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			editorPanel.loadFileAndFormat(editorPanel.textPane, fc.getSelectedFile().getAbsolutePath());
+
+		}
 	}
 
 }

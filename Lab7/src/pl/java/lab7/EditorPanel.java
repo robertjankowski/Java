@@ -24,31 +24,26 @@ public class EditorPanel extends JPanel {
 
 	JScrollPane scrollPane;
 	JTextPane textPane;
+	List<String> checkList;
 
 	public EditorPanel() {
 		this.setLayout(new BorderLayout());
 		textPane = new JTextPane();
 		scrollPane = new JScrollPane(textPane);
-		// przykładowy tekst
-		List<String> list = new ArrayList<>();
 		try {
-			list = loadFile("dyktando.txt");
-		} catch (IOException e) {
+			checkList = loadFile(Preferences.FILE_NAME);
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		// list.forEach(item -> System.out.println(item));
-		list = formatList(list);
-		final String joined = list.stream().collect(Collectors.joining(" "));
-
+		// przykładowy tekst
+		loadFileAndFormat(textPane, "dyktando-short.txt");
 		textPane.setFont(new Font("Serif", Font.PLAIN, Preferences.FONT_NORMAL));
 		textPane.setBackground(new Color(220, 220, 220));
-		textPane.setText(joined);
-
 		this.add(scrollPane, BorderLayout.CENTER);
 	}
 
 	// load from file
-	private List<String> loadFile(String fileName) throws FileNotFoundException {
+	public List<String> loadFile(String fileName) throws FileNotFoundException {
 		List<String> list = new ArrayList<>();
 		Scanner s = new Scanner(new File(fileName), "utf-8");
 		while (s.hasNext()) {
@@ -61,24 +56,27 @@ public class EditorPanel extends JPanel {
 	private List<String> formatList(List<String> src) {
 		List<String> newList = new ArrayList<>();
 		for (String s : src) {
-			StringBuilder sb = new StringBuilder(s.length());
-			CharacterIterator it = new StringCharacterIterator(s);
-			for (char ch = it.first(); ch != CharacterIterator.DONE; ch = it.next()) {
-				switch (ch) {
-				case 'ó':
-				case 'u':
-				case 'ż':
-				case 'h':
-					sb.append("?");
-					break;
-				default:
-					sb.append(ch);
-					break;
-				}
-			}
-			newList.add(sb.toString());
+			newList.add(formatString(s));
 		}
 		return newList;
+	}
+
+	private String formatString(String s) {
+		return s.replaceAll("ch", "?").replaceAll("ó", "?").replaceAll("u", "?").replaceAll("ż", "?")
+				.replaceAll("h", "?").replaceAll("rz", "?");
+	}
+
+	// loadFileAndFormat
+	public void loadFileAndFormat(JTextPane textPane, String fileName) {
+		List<String> list = new ArrayList<>();
+		try {
+			list = loadFile(fileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		list = formatList(list);
+		final String joined = list.stream().collect(Collectors.joining(" "));
+		textPane.setText(joined);
 	}
 
 	public void changeColor(JTextPane tp, String msg, Color c) {
