@@ -36,7 +36,7 @@ public class EditorPanel extends JPanel {
 			e.printStackTrace();
 		}
 		// przykładowy tekst
-		loadFileAndFormat(textPane, "dyktando-short.txt");
+		loadFileAndFormat(textPane, Preferences.FILE_NAME);
 		textPane.setFont(new Font("Serif", Font.PLAIN, Preferences.FONT_NORMAL));
 		textPane.setBackground(new Color(220, 220, 220));
 		this.add(scrollPane, BorderLayout.CENTER);
